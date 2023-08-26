@@ -1,1 +1,0 @@
-The IDE I'm not choosing for CIS263AA is Eclipse for Windows or MacOS. In my experience Eclipse is a little bit more sluggish and memory intensive compartively to other IDES. I like the modern designs of other IDES such as NetBeans or my chosen IDE VScode. Eclipse also doesn't have much integration with outside softwares or plugins to enhance the coding experience.
