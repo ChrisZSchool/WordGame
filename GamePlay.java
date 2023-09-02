@@ -30,6 +30,7 @@ public class GamePlay {
 
         // Generate Num
         randomNumberClass.generateNumber();
+        System.out.println(randomNumberClass.getRandomNum());
 
         // Game Loop
         while (!isGameOver) {
@@ -44,11 +45,8 @@ public class GamePlay {
             int guess = sc.nextInt();
 
             // Final Comparison
-            if (guess == randomNumberClass.getRandomNum()) {
-                System.out.println(String.format("CORRECT! Nice work %s", firstName));
+            if (randomNumberClass.compareNumber(guess))
                 isGameOver = true;
-            } else
-                System.out.println("WRONG!");
 
         }
 
