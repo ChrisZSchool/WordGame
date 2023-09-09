@@ -3,8 +3,8 @@ import java.util.Scanner;
 public class GamePlay {
 
     // Global Vars
-    private static Person person;
     public static boolean isGameOver = false;
+    public static Turn turnMaking = new Turn();
     public static Scanner sc = new Scanner(System.in);
     public static Numbers randomNumberClass = new Numbers();
 
@@ -13,6 +13,8 @@ public class GamePlay {
         // Initialize Local Vars
         String firstName = "";
         String lastName = "";
+        Players person;
+        Hosts host = new Hosts("Jefferson");
 
         // Grab Data
         System.out.println("What is your name :) ?");
@@ -24,29 +26,28 @@ public class GamePlay {
         if (result.equalsIgnoreCase("yes")) {
             System.out.print("Enter a Last Name: ");
             lastName = sc.next();
-            person = new Person(firstName, lastName);
+            sc.nextLine();
+            person = new Players(firstName, lastName);
         } else
-            person = new Person(firstName);
+            person = new Players(firstName);
 
         // Generate Num
-        randomNumberClass.generateNumber();
-        System.out.println(randomNumberClass.getRandomNum());
+        host.randomizeNum();
 
         // Game Loop
         while (!isGameOver) {
-            // Compare for formatting
-            if (lastName != "")
-                System.out.println(
-                        String.format("Hi %s %s, I'm thinking of a number between 1-100?", firstName, lastName));
-            else
-                System.out.println(String.format("Hi %s, I'm thinking of a number between 1-100?", firstName));
 
-            // Grab Guess
-            int guess = sc.nextInt();
+            Boolean gameResult = turnMaking.takeTurn(person, host);
 
             // Final Comparison
-            if (randomNumberClass.compareNumber(guess))
-                isGameOver = true;
+            if (gameResult) {
+                System.out.println("Do you want to continue? {'yes','no'}");
+                String isContinue = sc.nextLine().trim();
+                if (isContinue.equalsIgnoreCase("yes"))
+                    host.randomizeNum();
+                else
+                    isGameOver = false;
+            }
 
         }
 

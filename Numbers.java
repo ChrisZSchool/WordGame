@@ -3,7 +3,7 @@ import java.util.Random;
 public class Numbers {
 
     // Global Vars
-    private int randomNum;
+    private static int randomNum;
 
     // Functs
 
