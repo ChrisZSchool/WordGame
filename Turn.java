@@ -21,10 +21,12 @@ public class Turn {
 
         if (num.compareNumber(playerGuess)) {
             player.setMoney(player.getMoney() + 500);
+            System.out.println("You Gain $500");
             System.out.println(player.toString());
             return true;
         } else {
             player.setMoney(player.getMoney() - 200);
+            System.out.println("You Lose $500");
             System.out.println(player.toString());
             return false;
         }
