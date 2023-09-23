@@ -6,7 +6,6 @@ public class GamePlay {
     public static boolean isGameOver = false;
     public static Turn turnMaking = new Turn();
     public static Scanner sc = new Scanner(System.in);
-    public static Numbers randomNumberClass = new Numbers();
 
     // Functs
     public static void main(String[] args) {
@@ -42,8 +41,8 @@ public class GamePlay {
         System.out.println(playerList[1]);
         System.out.println(playerList[2]);
 
-        // Generate Num
-        host.randomizeNum();
+        // Ask for word
+        host.selectWord();
 
         // Game Loop
         while (!isGameOver) {
@@ -57,7 +56,7 @@ public class GamePlay {
                     System.out.println("Do you want to continue? {'yes','no'}");
                     String isContinue = sc.nextLine().trim();
                     if (isContinue.equalsIgnoreCase("yes"))
-                        host.randomizeNum();
+                        host.selectWord();
                     else
                         isGameOver = true;
                     break;
