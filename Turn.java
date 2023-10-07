@@ -1,6 +1,8 @@
 import java.util.Random;
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
+
 public class Turn {
 
     public static Scanner sc = new Scanner(System.in);
@@ -12,17 +14,12 @@ public class Turn {
             // Initialize Random Class
             Random r = new Random();
 
-            // Initial Guess Prompt -- Grab Data
-            if (player.getLastName() != "")
-                System.out.println(
-                        String.format("[%s]: %s %s, guess a letter from the word %s", hosts.getFirstName(),
-                                player.getFirstName(), player.getLastName(), phrase.getPhrase()));
-            else
-                System.out.println(
-                        String.format("[%s]: %s, guess a letter from the word %s", hosts.getFirstName(),
-                                player.getFirstName(), phrase.getPhrase()));
-
-            String playerGuess = sc.nextLine();
+            String playerGuess = JOptionPane
+                    .showInputDialog(String.format("Guess a letter player %s", player.getFirstName()));
+            if (playerGuess.length() > 1) {
+                JOptionPane.showMessageDialog(null, "Invalid Guess");
+                playerGuess = "0";
+            }
             boolean result = phrase.findLetters(playerGuess);
             int rewardOptionRoll = r.nextInt(2);
 
@@ -37,7 +34,7 @@ public class Turn {
                     Physical physical = new Physical();
                     physical.displayWinnings(player, true);
                 }
-                System.out.println(player.toString());
+                JOptionPane.showMessageDialog(null, player.toString());
                 return true;
             } else {
                 return false;
