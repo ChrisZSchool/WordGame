@@ -3,6 +3,7 @@ import javax.swing.JOptionPane;
 public class Phrases {
     private static String gamePhrase;
     private static String playingPhrase;
+    public static GUI gui = new GUI();
 
     public Phrases(String gamePhrase) {
         Phrases.gamePhrase = gamePhrase;
@@ -42,9 +43,9 @@ public class Phrases {
         Phrases.playingPhrase = String.valueOf(gameText);
 
         if (charFound)
-            JOptionPane.showMessageDialog(null, String.format("Letter %s was correct", letter));
+            gui.addGameMessages(String.format("Letter %s was correct", letter));
         else
-            JOptionPane.showMessageDialog(null, "Incorrect Guess!");
+            gui.addGameMessages("Incorrect Guess!");
         if (!Phrases.playingPhrase.contains("_")) {
             System.out.println("Congrats you have guessed the word!");
             return true;

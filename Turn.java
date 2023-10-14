@@ -7,6 +7,7 @@ public class Turn {
 
     public static Scanner sc = new Scanner(System.in);
     public static Phrases phrase = new Phrases();
+    public static GUI gui = new GUI();
 
     public boolean takeTurn(Players player, Hosts hosts) {
         try {
@@ -17,7 +18,7 @@ public class Turn {
             String playerGuess = JOptionPane
                     .showInputDialog(String.format("Guess a letter player %s", player.getFirstName()));
             if (playerGuess.length() > 1) {
-                JOptionPane.showMessageDialog(null, "Invalid Guess");
+                gui.addGameMessages("Invalid Guess");
                 playerGuess = "0";
             }
             boolean result = phrase.findLetters(playerGuess);
@@ -34,7 +35,7 @@ public class Turn {
                     Physical physical = new Physical();
                     physical.displayWinnings(player, true);
                 }
-                JOptionPane.showMessageDialog(null, player.toString());
+                gui.addGameMessages(player.toString());
                 return true;
             } else {
                 return false;

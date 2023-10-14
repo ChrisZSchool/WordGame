@@ -1,19 +1,32 @@
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 
 public class GUI extends JFrame {
 
@@ -26,9 +39,12 @@ public class GUI extends JFrame {
     public static String hostName;
     private JLabel playerListLabel;
     private JLabel hostHeader;
+    private JTextArea gameMessageBox;
     private JLabel playingPhraseLabel;
     public static boolean isGameStart = false;
     public static boolean isGameOver = false;
+    public static DefaultListModel<String> gameMessages = new DefaultListModel<>();
+    private JList<String> gameMessagesList;
     public static Turn turnMaking = new Turn();
 
     public GUI() {
@@ -37,6 +53,18 @@ public class GUI extends JFrame {
 
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Menu Bar
+        JMenuBar menuBar = new JMenuBar();
+        JMenu gameMenu = new JMenu("Game");
+        JMenu aboutMenu = new JMenu("About");
+
+        // Menu Buttons
+        // Game Menu
+        JMenuItem addPlayerButton = new JMenuItem("Add Player");
+        JMenuItem addHostButton = new JMenuItem("Add Host");
+        // About Menu
+        JMenuItem layoutButton = new JMenuItem("Layout");
 
         // JPanel for player list
         JPanel playerListPanel = new JPanel();
@@ -52,7 +80,6 @@ public class GUI extends JFrame {
 
         // Add Player Button
         JPanel hostButtonPanel = new JPanel(new BorderLayout());
-        JButton addPlayerButton = new JButton("Add Player");
         addPlayerButton.addActionListener(new ActionListener() {
 
             @Override
@@ -70,8 +97,7 @@ public class GUI extends JFrame {
         hostHeader.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
 
         // Host Manage Button
-        JButton hostManageButton = new JButton("Manage Host and Gamephrase");
-        hostManageButton.addActionListener(new ActionListener() {
+        addHostButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 hostName = JOptionPane.showInputDialog("Enter Name for Host");
                 gamePhrase = JOptionPane.showInputDialog("Enter gamephrase");
@@ -81,6 +107,31 @@ public class GUI extends JFrame {
 
             }
         });
+
+        // Layout button in About
+        layoutButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null,
+                        "I went with a grid layout, because it was easy to get each item into each grid row and column.");
+            }
+        });
+
+        // Text Area to hold game messages
+        JPanel textPanel = new JPanel();
+        textPanel.setLayout(new GridLayout(1, 1)); // 1 row, 1 column
+        gameMessagesList = new JList<>(gameMessages);
+
+        // Scroll for that Text Area
+        JScrollPane scrollPane = new JScrollPane(gameMessagesList);
+        scrollPane.setPreferredSize(new Dimension(100, 100));
+
+        textPanel.add(scrollPane);
+
+        // Checkbox
+        JCheckBox saveMessagesCheck = new JCheckBox("Save Messages");
+        saveMessagesCheck.setToolTipText("Saves messages in box to the left");
+
+        // Layout Action
 
         // Game Phrase
         JPanel gameBoard = new JPanel();
@@ -121,6 +172,8 @@ public class GUI extends JFrame {
                                     int result = JOptionPane.showConfirmDialog(null, "Do you want to continue?",
                                             "Confirmation", JOptionPane.YES_NO_OPTION);
                                     if (result == JOptionPane.YES_OPTION) {
+                                        if (!saveMessagesCheck.isSelected())
+                                            gameMessages.clear();
                                         String newPhrase = JOptionPane.showInputDialog("Enter GamePhrase");
                                         phrase = new Phrases(newPhrase);
 
@@ -144,13 +197,26 @@ public class GUI extends JFrame {
         playerListPanel.add(playerListLabel);
         playerListPanel.add(addPlayerButton);
         playerListPanel.add(hostHeader);
-        playerListPanel.add(hostManageButton);
+
+        // Setting Mnemonics
+        gameMenu.setMnemonic('G');
 
         // Adding Elements to Main GUI
-        getContentPane().setLayout(new BorderLayout());
+        getContentPane().setLayout(new GridLayout(2, 2));
+
+        getContentPane().add(startGameButton);
+
         getContentPane().add(playerListPanel, BorderLayout.WEST);
         getContentPane().add(gameBoard, BorderLayout.EAST);
-        getContentPane().add(startGameButton, BorderLayout.SOUTH);
+        getContentPane().add(textPanel, BorderLayout.CENTER);
+        getContentPane().add(saveMessagesCheck);
+
+        gameMenu.add(addPlayerButton);
+        gameMenu.add(addHostButton);
+        aboutMenu.add(layoutButton);
+        menuBar.add(gameMenu);
+        menuBar.add(aboutMenu);
+        setJMenuBar(menuBar);
 
         // We are ready, set visible
         setVisible(true);
@@ -166,6 +232,23 @@ public class GUI extends JFrame {
         }
         sb.append("</html>");
         playerListLabel.setText(sb.toString());
+    }
+
+    public void addGameMessages(String message) {
+        // Add the message to the gameMessages list
+        gameMessages.addElement(message);
+
+        // Update the UI within the EDT
+        SwingUtilities.invokeLater(() -> {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < gameMessages.size(); i++) {
+                sb.append(gameMessages.get(i));
+                sb.append("\n"); // Add a line break between messages
+            }
+
+            // Set the gameMessageBox text
+            gameMessageBox.setText(sb.toString());
+        });
     }
 
 }
