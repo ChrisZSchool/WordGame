@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
@@ -65,6 +66,7 @@ public class GUI extends JFrame {
         JMenuItem addHostButton = new JMenuItem("Add Host");
         // About Menu
         JMenuItem layoutButton = new JMenuItem("Layout");
+        JMenuItem attributionButton = new JMenuItem("Attributions");
 
         // JPanel for player list
         JPanel playerListPanel = new JPanel();
@@ -116,6 +118,22 @@ public class GUI extends JFrame {
             }
         });
 
+        attributionButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null, "Nintendo Switch Image ~ PixaBay ~ ant2506\n" +
+                        "Flatscreen TV - freepik - <a href=\"https://www.freepik.com/free-photo/landscape-nature-scene-tv-appliance-generative-ai_41060528.htm#query=curved%20tv&position=0&from_view=search&track=ais\">Image by vecstock</a> on Freepik\n"
+                        +
+                        "Backyard pool - freepik - <a href=\"https://www.freepik.com/free-photo/landscape-nature-scene-tv-appliance-generative-ai_41060528.htm#query=curved%20tv&position=0&from_view=search&track=ais\">Image by vecstock</a> on Freepik\n"
+                        +
+                        "Jeep Truck - free pick - <a href=\"https://www.freepik.com/free-photo/landscape-nature-scene-tv-appliance-generative-ai_41060528.htm#query=curved%20tv&position=0&from_view=search&track=ais\">Image by vecstock</a> on Freepik\n"
+                        +
+                        "Gift Voucher - G - hotelsafloat.com - https://www.hotelsafloat.com/gift\n" +
+                        "Ding Sound - freesoundeffects - https://www.freesoundeffects.com/free-track/elevator-ding-426631/ding/\n"
+                        +
+                        "Buzzer Sound - zaps plat - https://www.zapsplat.com/music/gameshow-buzzer-buzz-short-2/");
+            }
+        });
+
         // Text Area to hold game messages
         JPanel textPanel = new JPanel();
         textPanel.setLayout(new GridLayout(1, 1)); // 1 row, 1 column
@@ -144,6 +162,15 @@ public class GUI extends JFrame {
         playingPhraseLabel = new JLabel();
         this.playingPhraseLabel.setFont(gameFont);
         gameBoard.add(this.playingPhraseLabel);
+
+        // // Image popup for prize
+        // JFrame prizePopUp = new JFrame("Image Pop Up");
+        // prizePopUp.setSize(400, 400);
+        // prizePopUp.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        // ImageIcon imageIcon = new ImageIcon("Assets/nintendo_switch.jpg");
+        // JLabel label = new JLabel(imageIcon);
+        // prizePopUp.add(label);
+        // prizePopUp.setVisible(true);
 
         // Start Game
         JButton startGameButton = new JButton("Start");
@@ -203,7 +230,6 @@ public class GUI extends JFrame {
 
         // Adding Elements to Main GUI
         getContentPane().setLayout(new GridLayout(2, 2));
-
         getContentPane().add(startGameButton);
 
         getContentPane().add(playerListPanel, BorderLayout.WEST);
@@ -214,6 +240,7 @@ public class GUI extends JFrame {
         gameMenu.add(addPlayerButton);
         gameMenu.add(addHostButton);
         aboutMenu.add(layoutButton);
+        aboutMenu.add(attributionButton);
         menuBar.add(gameMenu);
         menuBar.add(aboutMenu);
         setJMenuBar(menuBar);
